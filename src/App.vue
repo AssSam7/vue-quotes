@@ -1,13 +1,6 @@
 <template>
   <div class="container">
-    <div class="quotes__progress">
-      <h2>Quotes Added</h2>
-      <div class="progress" v-if="quotes.length">
-        <div class="bar" :style="{ width: quotes.length * 10 + '%' }">
-          <span>{{ quotes.length }} / 10</span>
-        </div>
-      </div>
-    </div>
+    <app-header :quotes="quotes" :maxQuotes="maxQuotes"></app-header>
     <app-new-quote @newQuote="addQuote"></app-new-quote>
     <app-quotes-grid
       :quotes="quotes"
@@ -20,6 +13,7 @@
 </template>
 
 <script>
+import Header from "./components/Header.vue";
 import NewQuote from "./components/NewQuote.vue";
 import QuotesGrid from "./components/QuotesGrid.vue";
 
@@ -32,12 +26,20 @@ export default {
     };
   },
   components: {
+    appHeader: Header,
     appNewQuote: NewQuote,
     appQuotesGrid: QuotesGrid
   },
   methods: {
     addQuote(quote) {
-      this.quotes.push(quote);
+      console.log(this.quotes.length);
+      if (this.quotes.length < this.maxQuotes) {
+        this.quotes.push(quote);
+      } else {
+        return alert(
+          "Maximum quotes limit reached, please delete some before adding"
+        );
+      }
     },
     deleteQuote(index) {
       this.quotes.splice(index, 1);
@@ -53,40 +55,6 @@ export default {
 
   margin: auto;
   margin-top: 5rem;
-}
-
-.quotes {
-  &__progress {
-    h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: lighten($color: #000000, $amount: 20);
-    }
-  }
-}
-
-.progress {
-  width: 100%;
-  height: 3rem;
-  border-radius: 5px;
-  background-color: darken($color: #ffffff, $amount: 5);
-  overflow: hidden;
-
-  .bar {
-    height: 100%;
-    background: linear-gradient(to right, #373b44, #4286f4);
-    transition: width 0.5s ease-in-out;
-
-    span {
-      padding: 0.3rem 0;
-      font-size: 1.5rem;
-      color: #fff;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
 }
 
 .info {

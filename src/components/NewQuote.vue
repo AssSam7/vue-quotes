@@ -17,8 +17,10 @@ export default {
   },
   methods: {
     addQuote() {
-      this.$emit("newQuote", this.quote);
-      this.quote = "";
+      if (this.quote.length) {
+        this.$emit("newQuote", this.quote);
+        this.quote = "";
+      }
     }
   }
 };
